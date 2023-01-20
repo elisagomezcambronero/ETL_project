@@ -8,6 +8,7 @@ import requests
 import seaborn as sns
 import pycountry
 import plotly.express as px
+import folium
 
 
 def abrir_csv(path): 
@@ -178,8 +179,9 @@ def barplot_grupos(df_group, variable_x, groupo_variables, xlabel, ylabel, title
     plt.title(title)
     plt.show()
 
-def quesito(data):
+def quesito(data, titulo):
     data.plot.pie(autopct='%1.1f%%')
+    plt.title(titulo)
     plt.show()
 
 def country_code(country_code):
@@ -194,11 +196,13 @@ def mapa_calor(df, countries, conteo, titulo):
                     color=conteo, title=titulo,
                     color_continuous_scale='Viridis', range_color=[0, 500])
     fig.show()
+    return fig
 
 def barras_interactivas(df, x_data, y_data, extra_data, titulo):
     fig = px.bar(df, x=x_data, y=y_data,
     hover_data=extra_data, title=titulo, color_discrete_sequence=['red'])
-    return fig.show()
+    fig.show()
+    return fig
 
 def tu_request_ticketmaster(Music_Genre, Countries, df_country, token): 
     events=[]

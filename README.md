@@ -1,21 +1,111 @@
 
-# Proyecto-1: Extract Transform Load (ETL)
+# Proyect-1: TOP SONGS & ARTISTS DATA ANALYSIS
+![](images/music_icon.png)
 
+**Objective**: This project aims to analyze the most popular songs and artists of the last years. 
+To achieve this goal I will manipulate and analyze a complete and complex dataset, adding information through an API and loading the generated database to SQL.    
 
-El objetivo de este proyecto es combinar todo lo que has aprendido sobre la gestión, limpieza y manipulación de datos. Al final, tendras que hacer una presentacion que nos cautive. Así que arremangase y vende te como nunca!
+                What music is Trending? Why is it trending?
+This Exploratory Data Analysis(EAD) project will end with several conclusions about what has been trending in the world of music in recent years. Thanks to the data set generated you will discover some elements that you may not know yet, so continue reading... you won't regret it!
 
-
-
-
-
-# Desafio [Extracción]
+## Repository Structure
 ---
-![](images/extraction_data.jpeg)
+Besides this read me you will find the following folders:
+
+![](images/Repository.png)
+- Data folder: you will find all the csv data files used for this project.
+- Images folder: you will find all the images related to this project.
+- Notebook folder: inside this folder you will find the following jupyter notebooks:   
+    - *Spotify Cleaning*: notebook related to all the extractions and cleaning of the dataset. It will integrate data extraction, cleaning and manipulation.
+    - *API ticketmaster_events* : Notebook to integrate addotional information through ticketmaster API.
+    - *SQL Spotify Songs and Artists*: Notebook with the code to load the dataset to SQL.
+    - *Conclusions*: notebook with interesting conclusions about the project.
+- sql-model: the SQL transcript to generate a SQL model with the project database.
+- src: a .py file with functions used in this project
+
+## Data extraction
+---
+Datasets extracted from [Kaggle Data Sets](https://www.kaggle.com/datasets):
+
+- Main dataset: **"Spotify Top 200 Charts (2020-2021)"**
+This dataset includes information about all songs that have been on Spotify Top 200 Weekly (Global) charts in 2020 and 2021
+
+- Addtional dataset: **"Spotify Artist Metadata Top 10k"** that will add the following information about the artist: *gender, age, type, country* to the main dataset
+
+## Cleaning  
+----
+In the jupyter notebook: notebook/Spotify Cleaning you will find the cleaning process
+ -   **"Spotify Top 200 Charts (2020-2021)"** shape is (1556, 22) and has the following columns: 'Highest Charting Position', 'Number of Times Charted',
+       'Week of Highest Charting', 'Song Name', 'Streams', 'Artist',
+       'Artist Followers', 'Song ID', 'Genre', 'Release Date', 'Weeks Charted',
+       'Popularity', 'Danceability', 'Energy', 'Loudness', 'Speechiness',
+       'Acousticness', 'Liveness', 'Tempo', 'Duration (ms)', 'Valence',
+       'Chord'
+- With an inner merge with the dataset **"Spotify Artist Metadata Top 10k"** we will add to the dataset the following info:*gender, age, type, country* of the artist. Complete df.shape (1157, 26)
+
+### Cleaning Process:
+- df.dtypes: make sure the columns types are correct
+- Null values: will eliminate null values row ONLY if null values are <1% of the total values of the column
+
+### Data manipulation: 
+- **Genre**: Song [Genre] column has the following format:"['indie rock italiano', 'italian pop']". It gives a string with one or more specific genres for the song. With this information I have created 3 columns: 
+    - "Genre1": using regex this column will give the first genre inside the string in [Genre] column. Ex. input: "['indie rock italiano', 'italian pop']" output: 'indie rock italiano'. This column will be later rename as [Subgenre]
+    - "Genre2": using regex this column will give the second genre (if any) inside the string in [Genre] column. Ex. input: "['indie rock italiano', 'italian pop']" output: 'italian pop'. This column will be later rename as [Subgenre_2]
+    - "Genre_Gen": using funzzywuzzy this column will give a more generic song genre inside the list : *"pop", "hip hop", "latin", "rock", "dance pop", "rap", "trap", "pop rock", "funk", "reggaeton", "r&b", "edm", "drill"*
+
+- **Week_Of_Highest_Charting**: this column gives you the week when the spotify song was on higuest charting: Ex. "2021-07-23--2021-07-30". With this information I have created the following columns:
+    - "Week_Of_Highest_Charting" will give the start of the week when the song was most charted. Ex. 2021-07-23
+    - "Month_Highest_Charting", will give you the month. Ex. July
+    - "Season_Highest_Charting" will give you the Season. Ex. Summer
+    - "Year_Highest_Charting" will give you the Year. ex 2021
+
+- **Gender**: This column gives you the Artist Gender. We had 4 genders: mixed (for group singers), male, female and other. For "other" a function will determine the singer gender. Then, to reduce for *nan* values gender_guesser.detector will be used to detect with the artist name if its a female or a male. 
+
+- **Country**: This column gives the country of the artist. It is the column with more null values (12.8%) to reduce this percentage we will use selenium webscraping which will go to [Music Brain web](https://musicbrainz.org/) to search the nationalities of the artists.
+
+- **Age**: This columns gives the age of the artist but since the age doesnt seem very accurate, I will add a column [Artist_generation] to allocate the following generations: ![](images/Generations.png) For this we are assuming all artists can produce a song from their birth to the present day, if not, necessary corrections will be made.
 
 
-Tendrás que demostrar tus habilidades obteniendo datos de distintas fuentes.
+### Data Structure
 
-- Punto de partida: encuentra una fuente de datos iniciales. Si todavía no lo tienes no buen lugar para comenzar a buscar sería [Awesome Public Data Sets](https://github.com/awesomedata/awesome-public-datasets) y [Kaggle Data Sets](https://www.kaggle.com/datasets).
+- Drop the columns that will not be needed: "Highest_Charting_Position","Number_Of_Times_Charted", "Song_Id", "Genre", "Age", "Weeks_Charted"
+- Drop null rows (condition <1% of the column)
+- df.shape: (1143, 28)
+- df.columns: 
+['Song_Name', 'Genre', 'Subgenre', 'Subgenre_2', 'Release_Date',
+       'Song_Decade', 'Streams', 'Week_Of_Highest_Charting',
+       'Month_Highest_Charting', 'Season_Highest_Charting',
+       'Year_Highest_Charting', 'Popularity', 'Danceability', 'Energy',
+       'Loudness', 'Speechiness', 'Acousticness', 'Liveness', 'Tempo',
+       'Duration_(Ms)', 'Valence', 'Chord', 'Artist', 'Artist_Followers',
+       'Gender', 'Artist_Generation', 'Type', 'Country']
+
+
+
+## Enrich data through an API
+----
+
+I will request to ticketmaster API to provide me, if any, futur events related to the artists of my dataset. The following information for events all around the wold: *Event_Name, url, Country	City, Location* will enrich spotify dataset.
+
+![](images/mapa_events_crop.png)
+
+## Load data to SQL 
+----
+ I will create a Scema in SQL:
+
+ ![](images/Spotify_Sql_Diagram.png)
+
+
+# Tools used for the project
+import folium
+import os 
+from dotenv import load_dotenv
+Selenium
+import re
+gender_guesser.detector
+import numpy as np
+import datetime
+
 
 - Enriquece tus datos: alimenta tus datos extrayendo de otras fuentes de datos. Recuerda que tienes muchísima herramientas al alcance de tus manos para ello.
     - Llamadas a APIs.  
@@ -136,13 +226,7 @@ Podrás hacerlo con MongoDB o con SQL. Eres libre de elegir la que quieras, pero
 
 
 
-# Desafio [Estructura de Repositorio]
----
-![](images/githubportada.jpeg)
 
-En este apartado tendrás que crear un repositorio para tu proyecto. Ten en cuenta que estas compartiendo tu código de manera publica con toda la comunidad; gente como tú que quiere ampliar conocimientos pero también con recruiters. 
-
-Es por eso que la estructura de un repositorio es esencial. Tienes que enganchar a tu lector. Tiene que ser accesible y esto empieza con un buen readme.
 
 
 ## .gitignore
@@ -182,14 +266,7 @@ clean.py
 
 - readme
 
-# Cómo entregar el proyecto
 
-- Crea un nuevo repositorio con el nombre `ETL_project` en tu github.
-- Crea un archivo llamado README.md, este fichero debe estar en la raíz del repositorio con la documentación del proyecto. 
-
-- Insistimos pero....Asegúrate de incluir tanta información útil como sea posible. Alguien que encuentre el README.md debería poder obtener una idea completa del proyecto sin navegar por sus archivos.
-
-- Finalmente la entrega tendrás que hacerla via Issue con tu nombre en este repo. Donde tendrás que incluir el enlace a tu repo en comentarios. 
 
 
 
