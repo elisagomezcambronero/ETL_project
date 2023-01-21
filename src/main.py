@@ -204,28 +204,3 @@ def barras_interactivas(df, x_data, y_data, extra_data, titulo):
     fig.show()
     return fig
 
-def tu_request_ticketmaster(Music_Genre, Countries, df_country, token): 
-    events=[]
-    Genre = input(f"¿What is your favorite music genre? {Music_Genre}")
-    country= input(f"¿Which Country interest you for the event? {Countries}")
-    countryCode= df_country.loc[country, :]
-    token=token
-    url = "https://app.ticketmaster.com/discovery/v2/events/"
-    params = {"keyword": Genre,
-              "countryCode":countryCode,
-           "apikey":token}   
-    res = requests.get(url,params=params)
-    if res.status_code == 200:
-        
-        events.append(res.json())
-    else:
-        print(f"Tenemos un problema en el video {event}")
-    try:
-        your_events=events[0]['_embedded']["events"]
-        df_your_events=pd.DataFrame(your_events)
-        event_name=df_your_events["name"].unique().tolist()
-        text=f"These are the events that may interest you: {event_name} Do you want to know where to buy them? Through this link https://www.ticketmaster.es/ you can search for your event and buy tickets before they run out"
-    except:
-        text= "Sorry you dont have any events available for you request"
-    
-    return text

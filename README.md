@@ -2,11 +2,10 @@
 # Proyect-1: TOP SONGS & ARTISTS DATA ANALYSIS
 ![](images/music_icon.png)
 
-**Objective**: This project aims to analyze the most popular songs and artists of the last years. 
-To achieve this goal I will manipulate and analyze a complete and complex dataset, adding information through an API and loading the generated database to SQL.    
+**Objective**: The objective of this project is to analyze the most popular songs and artists of the last years by manipulating and analyzing a complete and complex dataset, adding information through an API, and loading the generated database to SQL.   
 
                 What music is Trending? Why is it trending?
-This Exploratory Data Analysis(EAD) project will end with several conclusions about what has been trending in the world of music in recent years. Thanks to the data set generated you will discover some elements that you may not know yet, so continue reading... you won't regret it!
+This Exploratory Data Analysis(EAD) project will end with several conclusions about what has been trending in the world of music in recent years. Thanks to the data set generated you will discover some elements that you may not know yet, so continue reading... you won't regret it! 
 
 ## Repository Structure
 ---
@@ -34,6 +33,8 @@ This dataset includes information about all songs that have been on Spotify Top 
 
 ## Cleaning  
 ----
+The data will be cleaned and manipulated to reveal interesting conclusions about the world of music in recent years.
+
 In the jupyter notebook: notebook/Spotify Cleaning you will find the cleaning process
  -   **"Spotify Top 200 Charts (2020-2021)"** shape is (1556, 22) and has the following columns: 'Highest Charting Position', 'Number of Times Charted',
        'Week of Highest Charting', 'Song Name', 'Streams', 'Artist',
@@ -70,7 +71,7 @@ In the jupyter notebook: notebook/Spotify Cleaning you will find the cleaning pr
 
 - Drop the columns that will not be needed: "Highest_Charting_Position","Number_Of_Times_Charted", "Song_Id", "Genre", "Age", "Weeks_Charted"
 - Drop null rows (condition <1% of the column)
-- df.shape: (1143, 28)
+- df.shape (1114, 28)
 - df.columns: 
 ['Song_Name', 'Genre', 'Subgenre', 'Subgenre_2', 'Release_Date',
        'Song_Decade', 'Streams', 'Week_Of_Highest_Charting',
@@ -85,196 +86,77 @@ In the jupyter notebook: notebook/Spotify Cleaning you will find the cleaning pr
 ## Enrich data through an API
 ----
 
-I will request to ticketmaster API to provide me, if any, futur events related to the artists of my dataset. The following information for events all around the wold: *Event_Name, url, Country	City, Location* will enrich spotify dataset.
+I will request to ticketmaster API to provide me, if they are any, futur events related to the artists of my dataset. The following information for events all around the wold: *Event_Name, url, Country	City, Location* will enrich spotify dataset. df.shape (1114, 34)
 
 ![](images/mapa_events_crop.png)
 
 ## Load data to SQL 
 ----
- I will create a Scema in SQL:
+- Creating a schema in my dataset: inside SQL I have created the following tables where I will upload the database. This Diagram will have several tables with song, artist and events, each table will have its own ID and there will be connected between them:
 
  ![](images/Spotify_Sql_Diagram.png)
 
+ To find the script to the SQL Schema: sql_model /SQL_Spotify_script
 
-# Tools used for the project
-import folium
-import os 
-from dotenv import load_dotenv
-Selenium
-import re
-gender_guesser.detector
-import numpy as np
-import datetime
+- In the jupyter notebook : notebook/Spotify Songs and Artists, I will connect to SQL (with sqlalchemy) to be able to upload my data to SQL. (I will have to create Ids for each table). 
 
+# Conclusions
+----
+As a result from a complex dataset with multiple information about songs, artists and events we will get the following conclusions (notebook/Conclusions):
 
-- Enriquece tus datos: alimenta tus datos extrayendo de otras fuentes de datos. Recuerda que tienes muchísima herramientas al alcance de tus manos para ello.
-    - Llamadas a APIs.  
-    Nota: La API que utilices puede requerir autenticación a través de token.
+*"According to the musician, pop music is inherently popular because it creates a sense of familiarity for listeners"- elle magazine*.
+Top spotify music predominat genre was by far Pop Genre.
+![](images/Song_Genre.png)
+*Where does most popular artists come from?*
 
-    - Web Scraping, que puede ser usando Selenium o BeautifulSoup. 
-    
-    Si quieres utilizar mas de una de estas herramientas, puedes. El limite es el cielo. **Pero al menos tienes que usar una.**
+The United States is the most influential country in the industry and with this dataset we can confirm that US is the country where most influencial artist are from:
 
--  ¡Los datos que traigas para enriquecer el conjunto de datos inicial tendrán que estar relacionados con él y complementarlo! 
+ ![](images/Artist_country.png)
 
-
-# Desafio [Exploratory Data Analysis (EDA)]
----
-![](images/pandas.jpeg)
-
-
-El Análisis Exploratorio de Datos o en inglés Exploratory Data Analysis (EDA) es un método de análisis de los conjuntos de datos para resumir sus principales características. Recuerda que implica el uso de gráficos y visualizaciones para explorar y analizar tu conjunto de datos. El objetivo es explorar, investigar y aprender, no confirmar hipótesis estadísticas.
-
-
-A partir de todos los datos recolectados. Deberas importarlos, usar tus habilidades de gestión de datos para limpiarlos, analizarlos y luego exportarlos como un archivo de datos CSV limpio. 
-
-
-
-## TO DO's
----
-
-- Decide tus hipótesis o preguntas de investigación. Ten en cuenta que a lo largo del proyecto surgirán nuevas preguntas de gran valor. Pero cuidado con complicarte la vida; gestiona tu tiempo y focaliza tus esfuerzos en lo realmente importante. 
-
-- Explora los datos y describe lo que has encontrado.
-Puedes usar: `df.describe()`, `df["column"]`... etc.
-
-- Usa al menos 5 técnicas de limpieza de datos dentro de un jupyter notebook. Recuerda analizar valores nulos, borrado de columnas, datos duplicados, manipulación de strings, aplicación de funciones, expresiones regulares, etc.
-
-- Crea al menos cinco gráficos que sean perspicaces.
-
-- Muestra datos que validen las conclusiones basadas en tus hipótesis en un jupyter notebook.
-
-- Crea una narración convincente en torno a tus hallazgos. ¡Piensa en tus stakeholders y convence los con tus conclusiones! Recuerda que cualquiera puede acabar en tu repositorio; incluyendo los recruiters. (Algunas diapositivas con poco texto y tramas bonitas suelen ser útiles) 
-
-
-## Sugerencias
----
-- Examina los datos e intenta comprender qué significan los campos antes de sumergirte en los métodos de limpieza y manipulación de datos.
-
-
-- Averigua cómo encajan y cómo preparar los datos de ambas fuentes para tu informe. Algunas sugerencias sobre cómo podrías lograr esto:
-
-    - Tienes un conjunto de datos. Ahora puede usar una API usando los datos de una columna y crear una nueva con información valiosa de tu respuesta para cada fila.
-
-    - Fusionar dos conjuntos de datos es complicado: necesitarías al menos la misma columna con los mismos datos en ambos. No pienses demasiado en esta etapa. Puedes establecer la relación de ambas fuentes de datos a través de una visualización.
-    -  Crea algunos informes que contengan datos valiosos del conjunto de datos + enriquecimiento. 
-
-    - Simplemente resume los datos y genera algunas estadísticas básicas ( mean, max, min, std, etc.).
-
-    - Realiza estadísticas basadas en agregaciones de datos utilizando groupby().
-
-    - Vuelve te loco con la investigación.
-
-- Divide el proyecto en diferentes pasos: usa los temas cubiertos en las lecciones para formar una lista de tareas.
-
-- Compromete te con el proyecto y se constante, no tengas miedo de hacer algo incorrectamente porque siempre podrás retroceder a una versión anterior. Los **commits** te ayudaran en esta tarea. 
-
-- Consulta la documentación y los recursos proporcionados para comprender mejor las herramientas que estas utilizando.
-
-
-
-# Desafio [Data Pipeline]
----
-![](images/pipeline.jpeg)
-
-¿Qué es un pipeline?
-Un pipeline de datos es una serie de procesos de datos en los que la salida de cada uno es la entrada del siguiente, formando una cadena.
-
-Esto es super útil para cuando necesitemos una misma función en distintos proyectos para reutilizarlos. 
-
-Para este apartado, deberas construir un pipeline de datos que procese los datos y produzca un resultado. Debes demostrar tus competencia con las herramientas que cubrimos en clase: funciones, clases, listas comprimidas, operaciones de strings, pandas y manejo de errores ... etc.
-
-
-## TO DO's
----
-Los requisitos técnicos para esta parte del proyecto son los siguientes:
-
-- Debes construir una pipeline con la mayoría de tu código envuelto en funciones.
-
-- Debes cubrir las siguientes etapas del pipeline de datos: adquisición de datos, limpieza, análisis e informes.
-
-- Debes demostrar todos los temas que cubrimos hasta ahora (funciones, listas comprimidas, operaciones con strings, etc.) en tu procesamiento de datos.
-
-- Deberá haber algún conjunto de datos que se importe y algún resultado que se exporte.
-
-- Tu código debe guardarse en un archivo ejecutable de Python (.py) el cual deberá estar en una carpeta/directorio llamado `src`.
-
-
-
-# Desafio [Carga en BBDD]
----
-![](images/bbdd.jpeg)
-
-
-Para este desafío tendrás que generar una base de datos con los datos tratados de la extracción. 
-
-Podrás hacerlo con MongoDB o con SQL. Eres libre de elegir la que quieras, pero por lo menos una de ellas deberá estar presente en tu proyecto. 
-
-## TO DO's
----
-
-- Si utilizas SQL 
-    - Crear un modelo de datos con varias tablas y sus relaciones. 
-    - ER Diagram (Esquema de relaciones entre tablas)
-    - Adjuntar el código de creación del modelo de bbdd.
-    - Generar un jupyter notebook con todo lo necesario para la carga de datos. 
-
-- Si utilizas MongoDB 
-    - Generar un jupyter notebook con todo lo necesario para la creación de colecciones necesarias. 
-    - Incluir en un jupyter notebook todo lo necesario para la carga de datos. 
-
-
-
-
-
-
-
-## .gitignore
----
-Recuerda que hay cierta información sensible. Restringela con el `.gitignore`
-    - Tokens
-    - Datos protegidos por licencias o exigencias del propietario / creador de esa fuente de información. Lee bien la documentación por si las moscas
-
-
-## README.md 
----
-
-Aquí es donde presentas tu proyecto, donde tienes que venderte y cautivar al lector. Debes incluir la  motivación del proyecto en la introducción. Ademas tendrás que incluir las hipotesis inciales, los pasos que has seguido, tus conclusiones, las tecnologías usadas y las fuentes de las que has obtenido tus datos.  
-
-## Estructuras de carpetas 
----
-- data: aquí irán todos los datos del proyecto. Los inputs como los outputs. Recomendamos hacer sub carpetas dentro de data. 
-
-- notebooks: aquí irán todos los jupyters utilizados dentro del proyecto. Recuerda que el nombrado deberá ser descriptivo de la tarea de su contenido. Ademas deberá estar numerados para su mejor entendimiento.
-
-ejemplo :
-
-```
-1-extraccion_csv.ipynb
-2-limpieza_csv.ipynb
-3-llamada_API.ipynb
-```
-
-- src: aquí irán todos los ejecutables o archivos de soporte. 
-
-ejemplo:
-```
-suport_extraction.py
-clean.py
-```
-- images: imágenes de portada y/o gráficas.
-
-- readme
-
-
-
-
-
- **SIN BBDD SE CONSIDERA COMO PROYECTO NO ENTREGADO**
+*Why is old music on Spotify's Top Today lists?*
+      ![](images/Songs_Decades.png)
  
- **SIN API O WEB SCRAPING SE CONSIDERA COMO PROYECTO NO ENTREGADO**
- 
- 
- **SIN README SE CONSIDERA COMO PROYECTO NO ENTREGADO**
+Most of the music is current, but there is a small percentage of older music in the dataset. It was identified that first, the oldest songs are by top artists such as: *Frank Sinatra, Queen, Elton John, AC/DC* and second, that Christmas songs endure over time:
+    ![](images/december_oldsongs.png)
 
+So my recommendations, if you are an Artist and you want your music to be heard over time, would be, either become an iconic singer or focus on Christmas songs ;)
+
+*Does popular tastes change over the year?*
+Lets see if popularity characteristics values change depending on the season:
+  ![](images/song_caracteristics.png)
+
+What does stand out is that most popular songs in *winter* have a higher degree of *acoustic* characteristics.This indicate that in winter people tends to like songs that are less electronic and more acoustic compared to other seasons. So YES, people taste can change!
+
+**Tell me what you like and I will tell you what you want !!**
+
+Finally, at the end of Conclusion jupyter you will find a function (using ticketmaster API) that will ask you the following questions:
+*What is your favorite music genre?* (from a list of music genres) and *Which Country interest you for the event?* (from a list of countries) and will give you the name of the events that will interest you!!
+
+Ex. What is your favorite music genre? rock
+Which Country interest you for the event? Spain
+
+Output: **['The Kooks', 'VV', 'EELS', 'Uoho', 'Deathstars.', 'Blackberry Smoke', 'Anastacia', 'MADONNA – THE CELEBRATION TOUR', 'Queen Extravaganza', 'The Who: Hits Back! Tour', 'Michael Bublé - Higher Tour 2023', 'Shayfer James']**
+
+## Tools used for the project
+- [Pandas](https://pandas.pydata.org/)
+- [Numpy](https://numpy.org/)
+- [Folium](https://python-visualization.github.io/folium/)
+- [Dotenv](https://pypi.org/project/python-dotenv/) 
+- [Selenium](https://www.selenium.dev/)
+- [Gender_guesser.detector](https://pypi.org/project/gender-guesser/)
+- [Datetime](https://docs.python.org/3/library/datetime.html)
+- [Sqlalchemy](https://www.sqlalchemy.org/)
+- [Sys](https://docs.python.org/3/library/sys.html)
+- [Matplotlib](https://matplotlib.org/)
+- [Requests](https://requests.readthedocs.io/en/master/)
+- [Seaborn](https://seaborn.pydata.org/)
+- [Pycountry](https://pypi.org/project/pycountry/)
+- [Plotly Express](https://plotly.com/python/plotly-express/)
+
+
+## Acknowledgements and recommendations
+----
+I would like to thank Ironhack, Tech School, especially my teachers: Ana, Jean-Charles and Cesar, for giving me the knowledge, tools and the help to make this project possible.
+
+As a recommendation, I would encourage readers to continue this analysis of Spotify songs, explore the dataset, use the Ticketmaster API and SQL model. There is a lot to learn from music, so why stopping here!
 
